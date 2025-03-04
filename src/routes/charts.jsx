@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import GraficoFiltrado from "../components/Graficos/grafico"; // Asegúrate de que la ruta sea correcta
 import { GraficoDatos } from "../services/analiticas";
 import { FiltroGrafico } from "../components/Graficos/filtroGrafico";
+import { DownloadCSV } from "../services/analiticas";
 
 const Charts = () => {
   const [data, setData] = useState([]);
@@ -44,6 +45,10 @@ const Charts = () => {
     }
   };
 
+  const onExportCSV = () => {
+    DownloadCSV(filters);
+  };
+
   const getData = async () => {
     try {
       setIsLoading(true);
@@ -69,6 +74,7 @@ const Charts = () => {
         filters={filters}
         onFilterChange={handleFilterChange}
         onResetFilters={handleResetFilters}
+        onExportCSV={onExportCSV}
       />
       <GraficoFiltrado data={data} isLoading={isLoading} />
     </div>

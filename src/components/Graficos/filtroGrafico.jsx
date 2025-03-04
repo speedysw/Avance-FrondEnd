@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import fetchCantidadRadares from "../../services/analiticas";
 
-export function FiltroGrafico({ filters, onFilterChange, onResetFilters }) {
+export function FiltroGrafico({ filters, onFilterChange, onResetFilters, onExportCSV }) {
   const [radarList, setRadarList] = useState([]);
 
   useEffect(() => {
@@ -21,6 +21,13 @@ export function FiltroGrafico({ filters, onFilterChange, onResetFilters }) {
           className="text-sm text-red-500 hover:text-red-700 focus:outline-none border border-red-500 rounded-lg px-2 py-1"
         >
           Limpiar filtros
+        </button>
+
+        <button
+          onClick={onExportCSV}
+          className="text-sm text-green-500 hover:text-green-700 focus:outline-none border border-green-500 rounded-lg px-2 py-1"
+        >
+          Descargar CSV
         </button>
       </div>
 
@@ -92,4 +99,5 @@ FiltroGrafico.propTypes = {
   }),
   onFilterChange: PropTypes.func.isRequired,
   onResetFilters: PropTypes.func.isRequired,
+  onExportCSV: PropTypes.func.isRequired,
 };

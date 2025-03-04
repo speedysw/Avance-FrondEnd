@@ -51,3 +51,28 @@ export async function GraficoDatos(filtros) {
     }
 }
 
+export async function DownloadCSV(filtros) {
+    try {
+        const queryParams = new URLSearchParams(filtros).toString();
+        const response = await axios.get(`${API_URL}/export/csv?${queryParams}`, { responseType: 'blob' });
+        
+        // El blob ya está en response.data
+        const blob = response.data;
+        
+        // Crea un objeto URL para el blob
+        const url = window.URL.createObjectURL(blob);
+        
+        // Crea un enlace temporal y dispara la descarga
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'datos.csv';
+        document.body.appendChild(a);
+        a.click();
+        
+        // Limpia el DOM y la URL creada
+        a.remove();
+        window.URL.revokeObjectURL(url);
+        } catch (error) {
+        console.error("Error al descargar el archivo CSV:", error);
+        }
+}

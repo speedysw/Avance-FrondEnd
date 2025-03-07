@@ -1,8 +1,9 @@
 // ProtectedRoute.jsx
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { useAuth } from "../contexts/useAuth";
+import PropTypes from "prop-types";
 
-const ProtectedRoute = () => {
+const ProtectedRoute = ({children}) => {
     const { isAuthenticated, loading } = useAuth();
 
   // Mientras se valida el estado de autenticación, muestra un indicador de carga
@@ -16,7 +17,11 @@ const ProtectedRoute = () => {
     }
 
   // Si está autenticado, renderiza los componentes hijos
-    return <Outlet />;
+    return children;
 };
 
 export default ProtectedRoute;
+
+ProtectedRoute.propTypes = {
+  children: PropTypes.node.isRequired,
+};

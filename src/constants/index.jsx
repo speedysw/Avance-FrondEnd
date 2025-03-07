@@ -7,22 +7,22 @@ export const navbarLinks = [
             {
                 label: "Dashboard",
                 icon: Home,
-                path: "/",
+                path: "/Dashboard",
             },
             {
                 label: "Tablas",
                 icon: Table2Icon,
-                path: "/analytics",
+                path: "/Analiticas",
             },
             {
                 label: "Grafico",
                 icon: ChartColumn,
-                path: "/graficos",
+                path: "/Graficos",
             },
             {
                 label: "Radares",
                 icon: RadarIcon,
-                path: "/radares",
+                path: "/Radares",
             }
         ],
     },

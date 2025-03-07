@@ -5,7 +5,6 @@ export async function loginService(username, password) {
     const formData = new URLSearchParams();
     formData.append("username", username);
     formData.append("password", password);
-    
     try {
         const response = await fetch(`${API_URL}/login`, {
         method: "POST",

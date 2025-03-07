@@ -26,14 +26,21 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (username, password) => {
     try {
-      const data = await loginService({ username, password });
-      localStorage.setItem("token", data.access_token);
-      setToken(data.access_token);
+      const data = await loginService(username,password);
+      console.log("Respuesta del API:", data);
+      if (data && data.token) {
+        localStorage.setItem("token", data.token);
+        setToken(data.token);
+        return data;
+      } else {
+        throw new Error("No se recibió access_token");
+      }
     } catch (error) {
       console.error(error);
-    };
-    };
-
+      throw error; // Re-lanzamos el error para que el componente Login lo capture
+    }
+  };
+  
   const logout = () => {
     logoutService(); 
     localStorage.removeItem("token");

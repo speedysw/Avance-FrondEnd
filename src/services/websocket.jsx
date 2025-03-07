@@ -11,7 +11,7 @@ export const WebSocketProvider = ({ children }) => {
     useSensorNotifications(sensorData);
 
     useEffect(() => {
-        const socket = new WebSocket("ws://192.168.0.112:8000/ws");
+        const socket = new WebSocket("ws://192.168.0.110:8000/ws");
 
         socket.onopen = () => {
         console.log("Conexión WebSocket establecida");

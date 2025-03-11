@@ -7,6 +7,7 @@ import SelectDropdown from "../components/Dashboard/select";
 import Modal from "../components/Dashboard/modal";
 import useSensorNotifications from "../components/Dashboard/notificaciones";
 import PaginationControlled from "../components/Dashboard/Paginacion";
+import RadarTime from "../components/Dashboard/radarTime";
 // Utilidades
 import { fetchUltimoDato, updateDatosRadar } from "../services/dashbord";
 import useSwitch from "../hooks/state_switch";
@@ -153,7 +154,7 @@ const RadarCards = () => {
                 </p>
                 <p className="text-sm text-gray-500">
                   Última actualización:{" "}
-                  {new Date(sensor.fecha).toLocaleString()} {console.log(sensor.fecha)}
+                  {new Date(sensor.fecha).toLocaleString()}
                 </p>
                 
                 <ButtonAlternance
@@ -162,6 +163,8 @@ const RadarCards = () => {
                     handleSwitchChange(sensor.id_radar, newState)
                   }
                 />
+
+                <RadarTime />
 
                 {isModalOpen && selectedSensor && (
                   <Modal

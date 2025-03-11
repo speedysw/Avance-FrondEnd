@@ -28,9 +28,9 @@ export const AuthProvider = ({ children }) => {
     try {
       const data = await loginService(username,password);
       console.log("Respuesta del API:", data);
-      if (data && data.token) {
-        localStorage.setItem("token", data.token);
-        setToken(data.token);
+      if (data && data.access_token) {
+        localStorage.setItem("token", data.access_token);
+        setToken(data.access_token);
         return data;
       } else {
         throw new Error("No se recibió access_token");

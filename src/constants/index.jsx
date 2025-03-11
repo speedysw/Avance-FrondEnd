@@ -2,7 +2,6 @@ import { ChartColumn, Home, Table2Icon, RadarIcon} from "lucide-react";
 
 export const navbarLinks = [
     {
-        title: "Dashboard",
         links: [
             {
                 label: "Dashboard",

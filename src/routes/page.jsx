@@ -153,7 +153,7 @@ const RadarCards = () => {
                 </p>
                 <p className="text-sm text-gray-500">
                   Última actualización:{" "}
-                  {new Date(sensor.fecha).toLocaleString()}
+                  {new Date(sensor.fecha).toLocaleString()} {console.log(sensor.fecha)}
                 </p>
                 
                 <ButtonAlternance

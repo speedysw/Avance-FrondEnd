@@ -30,7 +30,14 @@ export async function fetchUltimoDato() {
 export async function updateDatosRadar(updateRadar) {
     try {
         // Enviar la actualización al backend
-            const response = await axios.put(`${API_URL}/radares/${updateRadar.id_radar}`, updateRadar);
+            const endpoint = `${API_URL}/radares/${updateRadar.id_radar}`;
+            const token = localStorage.getItem("token");
+            const payload = { ...updateRadar };
+            const response = await axios.put(endpoint, payload, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
             return response.data
         } catch (error) {
             console.error("Error al actualizar el sensor:", error);

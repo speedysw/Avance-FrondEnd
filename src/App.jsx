@@ -1,5 +1,4 @@
 import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
-import { ThemeProvider } from "@/contexts/theme-context";
 import Layout from "@/routes/layout";
 import DashboardPage from "@/routes/page";
 import Tabla from "./routes/analiticas";
@@ -56,8 +55,6 @@ const router = createBrowserRouter([
 
     export default function App() {
     return (
-        <ThemeProvider storageKey="theme">
         <RouterProvider router={router} />
-        </ThemeProvider>
     );
 }

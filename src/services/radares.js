@@ -34,8 +34,17 @@ export async function UpdateRadar(editRadar) {
         } else {
             throw new Error("El tipo de editRadar.id_radar no es válido.");
         }
+        const token = localStorage.getItem("token");
+
+        const payload = { ...editRadar };
+        // Si no deseas enviar id_radar en el payload, podrías hacer:
+        // const { id_radar, ...payload } = editRadar;
         
-        await axios.put(endpoint, editRadar);
+        await axios.put(endpoint, payload, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
     } catch (error) {
         console.error('Error al guardar la edición:', error);
     }
@@ -55,7 +64,14 @@ export async function DeletedRadar(radarToDelete) {
             throw new Error("El tipo de editRadar.id_radar no es válido.");
         }
         
-        await axios.delete(endpoint, radarToDelete);
+        const token = localStorage.getItem("token");
+    
+        // Realizar la petición DELETE con el token en la cabecera Authorization
+        await axios.delete(endpoint, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
     } catch (error) {
         console.error('Error al guardar la edición:', error);
     }
@@ -64,7 +80,12 @@ export async function DeletedRadar(radarToDelete) {
 export async function crearRadar({nombre, volumen, umbral}){
     try{
         const url = `${API_URL}/create/radar_virtual` 
-        const response = await axios.post(url, { nombre, volumen, umbral })
+        const token = localStorage.getItem("token");
+
+        const response = await axios.post(url, { nombre, volumen, umbral },{
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },});
         return response.data
     }catch(error) {
         console.error('Error al crear el Radar:', error);

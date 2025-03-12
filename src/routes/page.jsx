@@ -8,10 +8,14 @@ import Modal from "../components/Dashboard/modal";
 import useSensorNotifications from "../components/Dashboard/notificaciones";
 import PaginationControlled from "../components/Dashboard/Paginacion";
 import RadarTime from "../components/Dashboard/radarTime";
+import TemporizadorModal from "../components/Dashboard/TemporizadorModal";
 // Utilidades
-import { fetchUltimoDato, updateDatosRadar } from "../services/dashbord";
+import { fetchUltimoDato, updateDatosRadar, activarTemporizador } from "../services/dashbord";
 import useSwitch from "../hooks/state_switch";
+
+//Iconos
 import { RiSettings5Line } from "@remixicon/react";
+import { Timer } from 'lucide-react';
 
 const RadarCards = () => {
   // Estados para manejar los sensores
@@ -22,6 +26,7 @@ const RadarCards = () => {
   const [selectedOption, setSelectedOption] = useState("");
   const [progressOption, setProgressOption] = useState("Circular");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  //const [isTemporizadorOpen, setIsTemporizadorOpen] = useState(false);
   const [selectedSensor, setSelectedSensor] = useState(null);
 
   // Estados para la paginación
@@ -89,6 +94,32 @@ const RadarCards = () => {
     }
   };
 
+  const [isTemporizadorOpen, setIsTemporizadorOpen] = useState(false);
+  const [radarTemporizador, setRadarTemporizador] = useState(null);
+  
+  const handleTemporizadorOpenModal = (sensor) => {
+      setRadarTemporizador(sensor);
+      setIsTemporizadorOpen(true);
+  };
+  
+  const handleActive = async (sensor) => {
+      try {
+          // Llama a la función de servicio que activa el temporizador
+          const updatedSensor = { ...sensor, timerActive: true };
+          const response = await activarTemporizador(updatedSensor);
+          // Actualiza el estado con la respuesta, similar a cómo lo haces en otros modales
+          setSensors((prevData) =>
+              prevData.map((r) =>
+                  r.id_radar === sensor.id_radar ? response : r
+              )
+          );
+          setIsTemporizadorOpen(false);
+      } catch (error) {
+          console.error("Error al activar el temporizador:", error);
+      }
+  };
+  
+
   return (
     <div>
       <div className="flex flex-wrap items-center gap-4 mb-4">
@@ -126,10 +157,19 @@ const RadarCards = () => {
                   onClick={() => handleOpenModal(sensor)}
                 >
                   <RiSettings5Line
-                    className="-ml-0.5 size-5 shrink-0"
+                    className="-ml-0.5 size-6 shrink-0"
                     aria-hidden="true"
                   />
+                  
                 </button>
+
+                <button
+                  className="absolute top-2 left-2 text-gray-800 font-semibold py-1 px-2"
+                  onClick={() => handleTemporizadorOpenModal(sensor)}
+                >
+                  <Timer size={24} />
+                </button>
+                
                 <h2 className="text-md font-medium mb-2">{sensor.nombre}</h2>
                 <h3 className="text-md font-medium mb-2 text-gray-600">
                   ID: {sensor.id_radar}
@@ -164,7 +204,10 @@ const RadarCards = () => {
                   }
                 />
 
-                <RadarTime />
+                { sensor.timerActive && sensor.estado && (
+                    <RadarTime sensorID={sensor.id_radar} duration={sensor.duration} />
+                )}
+
 
                 {isModalOpen && selectedSensor && (
                   <Modal
@@ -174,6 +217,16 @@ const RadarCards = () => {
                     onSave={onSave}
                   />
                 )}
+
+                {isTemporizadorOpen && radarTemporizador && (
+                    <TemporizadorModal
+                        isOpen={isTemporizadorOpen}
+                        onClose={() => setIsTemporizadorOpen(false)}
+                        onActive={() => handleActive(radarTemporizador)}
+                        radar={radarTemporizador}
+                    />
+                )}
+
               </div>
             </div>
           ))

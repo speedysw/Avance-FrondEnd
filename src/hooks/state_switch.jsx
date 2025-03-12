@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { changeSwitch } from '../services/dashbord'
+import { changeSwitchWithoutTimer } from '../services/dashbord'
 
 export default function useSwitchState(sensorID, initialState = false) {
     const [isChecked, setIsChecked] = useState(initialState)
@@ -7,7 +7,7 @@ export default function useSwitchState(sensorID, initialState = false) {
     const handleSwitchChange = async (sensorID, newState) => {
         setIsChecked(newState)
         try{
-            changeSwitch(sensorID, newState)
+            changeSwitchWithoutTimer(sensorID, newState)
         }catch(error){
             setIsChecked(!newState)
             console.error("Error al actualizar el estado del sensor:", error);

@@ -7,6 +7,8 @@ const Modal = ({ isOpen, closeModal, sensor, onSave }) => {
     nombre: sensor.nombre,
     volumen: sensor.volumen,
     umbral: sensor.umbral,
+    timerActive: sensor.timerActive,
+    duration: sensor.duration,
   });
 
   // Maneja los cambios en los campos del formulario
@@ -56,6 +58,16 @@ const Modal = ({ isOpen, closeModal, sensor, onSave }) => {
             />
         </div>
         <div className="mb-4">
+            <label className="block text-sm">Duracion:</label>
+            <input
+            type="number"
+            name="duration"
+            value={formData.duration}
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-300 rounded-md"
+            />
+        </div>
+        <div className="mb-4">
             <label className="block text-sm">Umbral:</label>
             <input
             type="number"
@@ -65,6 +77,7 @@ const Modal = ({ isOpen, closeModal, sensor, onSave }) => {
             className="w-full p-2 border border-gray-300 rounded-md"
             />
         </div>
+        
           <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded-md">
             Guardar
           </button>

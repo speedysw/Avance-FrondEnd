@@ -11,6 +11,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 export async function fetchUltimoDato() {
     try {
         const response = await axios.get(`${API_URL}/radares/last_date`);
+        //console.log("Datos obtenidos correctamente", response.data);
         return response.data
     } catch (error) {
         console.error("Error al obtener los datos:", error);
@@ -50,12 +51,50 @@ export async function updateDatosRadar(updateRadar) {
 
     Recibe como parametros el identificador del Radar y el estado de cambio solicitado
 */
-
-export async function changeSwitch(sensorID, newState){
-    try{
-        const rest = await axios.post(`${API_URL}/switch/${sensorID}`, { estado: newState });
-        console.log("Estado actualizado correctamente", rest.data)
-    }catch(error){
-        console.error("Error al actualizar el estado del sensor:", error);
+export async function changeSwitchWithoutTimer(sensorID, newState) {
+    try {
+        const url = `${API_URL}/switch/${sensorID}`;
+        const payload = { estado: newState };
+        const rest = await axios.post(url, payload);
+        console.log("Estado actualizado correctamente (sin temporizador)", rest.data);
+        return rest.data;
+        } catch (error) {
+        console.error("Error al actualizar el estado del sensor sin temporizador:", error);
+        throw error;
+        }
     }
+    
+export async function changeSwitchWithTimer(sensorID, newState, timerActive) {
+    try {
+        const url = `${API_URL}/switch/temporizador/${sensorID}`;
+        const payload = { estado: newState, timerActive };
+        const rest = await axios.put(url, payload);
+        console.log("Estado actualizado correctamente (con temporizador)", rest.data);
+        return rest.data;
+        } catch (error) {
+        console.error("Error al actualizar el estado del sensor con temporizador:", error);
+        throw error;
+    }
+}
+
+
+
+export async function activarTemporizador(activateSensor) {
+    try{
+        console.log("Este es lo que llega a activatesensor", activateSensor)
+        const endpoint = `${API_URL}/temporizador/${activateSensor.id_radar}`;
+        const token = localStorage.getItem("token");
+        const payload = { ...activateSensor };
+        console.log("Este es el payload", payload)
+        const response = await axios.put(endpoint, payload, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        console.log("Este es el valor de la respuesta", response.data);
+        return response.data
+    }catch(error){
+        console.error("Error al actualizar el sensor:", error);
+    }
+    
 }

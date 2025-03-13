@@ -26,25 +26,24 @@ export const Sidebar = forwardRef(({ collapsed }, ref) => {
         </div>
 
         <div className="flex w-full flex-col gap-y-4 overflow-y-auto p-3 [scrollbar-width:_thin]">
-            {navbarLinks.map((navbarLink) => (
-            <nav
-                key={navbarLink.title}
+            {navbarLinks.map((navbarLink, indexGroup) => (
+                <nav
+                key={`group-${navbarLink.title}-${indexGroup}`}
                 className={cn("sidebar-group", collapsed && "md:items-center")}
                 >
-                {/* Título del grupo */}
-                {navbarLink.links.map((link) => (
-                <NavLink
-                    key={link.label}
+                {navbarLink.links.map((link, indexLink) => (
+                    <NavLink
+                    key={`link-${link.path}-${indexLink}`}
                     to={link.path}
                     className={cn(
                         "sidebar-item flex items-center gap-x-4 p-3 rounded-lg transition-all duration-200 text-gray-600 hover:bg-gray-50 hover:text-gray-900",
                         collapsed && "md:w-[45px] justify-center"
                     )}
-                >
+                    >
                     <link.icon size={22} className="flex-shrink-0" />
                     {!collapsed && (
                         <span className="origin-left duration-200 font-medium whitespace-nowrap">
-                            {link.label}
+                        {link.label}
                         </span>
                     )}
                     </NavLink>
@@ -52,6 +51,7 @@ export const Sidebar = forwardRef(({ collapsed }, ref) => {
                 </nav>
             ))}
             </div>
+
 
             <div className="mt-auto flex flex-col gap-2 p-3">
             {/* Botón de Gestión de Usuarios */}

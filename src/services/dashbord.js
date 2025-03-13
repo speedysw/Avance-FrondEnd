@@ -96,5 +96,38 @@ export async function activarTemporizador(activateSensor) {
     }catch(error){
         console.error("Error al actualizar el sensor:", error);
     }
-    
+}
+
+export async function fetchHoraTermino(sensorID) {
+    try{
+        const endpoint = `${API_URL}/get_hora/${sensorID}`;
+        const token = localStorage.getItem("token");
+        const response = await axios.get(endpoint, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        console.log("Este es el valor de la respuesta", response.data);
+        return response.data
+    }catch(error){
+        console.error("Error al actualizar el sensor:", error);
+    }
+}
+
+export async function changeHoraTermino(sensorID, horaTermino){
+    try{
+        console.log("Este es lo que llega a activatesensor", sensorID)
+        const endpoint = `${API_URL}/temporizador/termino/${sensorID}`;
+        const token = localStorage.getItem("token");
+        const payload = { hora_termino: horaTermino };
+        console.log("Este es el payload", payload)
+        const response = await axios.put(endpoint, payload, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        console.log("Este es el valor de la respuesta", response.data);
+    }catch(error){
+        console.error("Error al actualizar el sensor:", error);
+    }
 }

@@ -10,7 +10,7 @@ import PaginationControlled from "../components/Dashboard/Paginacion";
 import RadarTime from "../components/Dashboard/radarTime";
 import TemporizadorModal from "../components/Dashboard/TemporizadorModal";
 // Utilidades
-import { fetchUltimoDato, updateDatosRadar, activarTemporizador } from "../services/dashbord";
+import { fetchUltimoDato, updateDatosRadar, activarTemporizador, changeHoraTermino } from "../services/dashbord";
 import useSwitch from "../hooks/state_switch";
 
 //Iconos
@@ -118,6 +118,25 @@ const RadarCards = () => {
           console.error("Error al activar el temporizador:", error);
       }
   };
+
+  const handleDesactive = async (sensor) => {
+    try {
+      // Crea una copia del sensor actualizando timerActive a false
+      const updateSensor = { ...sensor, timerActive: false };
+      // Elimina la clave del localStorage para evitar que se lea el valor expirado
+      await changeHoraTermino(sensor.id_radar, null)
+      // Llama al servicio para actualizar el estado del sensor en el servidor (o donde corresponda)
+      const response = await activarTemporizador(updateSensor);
+      // Actualiza el estado local de los sensores
+      setSensors((prevData) =>
+        prevData.map((r) =>
+          r.id_radar === sensor.id_radar ? response : r
+        )
+      );
+    } catch (error) {
+      console.error("Error al desactivar el temporizador:", error);
+    }
+  };  
   
 
   return (
@@ -164,6 +183,7 @@ const RadarCards = () => {
                 </button>
 
                 <button
+                  disabled={!sensor.estado}
                   className="absolute top-2 left-2 text-gray-800 font-semibold py-1 px-2"
                   onClick={() => handleTemporizadorOpenModal(sensor)}
                 >
@@ -205,9 +225,17 @@ const RadarCards = () => {
                 />
 
                 { sensor.timerActive && sensor.estado && (
+                  <>
                     <RadarTime sensorID={sensor.id_radar} duration={sensor.duration} />
+                    <button
+                      type="button"
+                      onClick={() => handleDesactive(sensor)}
+                      className="bg-transparent mt-2 py-2 px-2 mx-auto border hover:border-transparent rounded font-semibold hover:bg-red-700 text-red-700 hover:text-white border-red-700"
+                      >
+                      Cancelar temporizador
+                    </button>
+                  </>
                 )}
-
 
                 {isModalOpen && selectedSensor && (
                   <Modal

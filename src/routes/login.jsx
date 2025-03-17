@@ -76,6 +76,7 @@ export default function Login() {
                   type="text"
                   placeholder="Ingrese su usuario"
                   value={username}
+                  autoComplete="username"
                   onChange={(e) => setUsername(e.target.value)}
                   required
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
@@ -93,6 +94,7 @@ export default function Login() {
                   id="password"
                   type="password"
                   placeholder="Ingrese su contraseña"
+                  autoComplete="current-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required

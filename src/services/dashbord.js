@@ -1,5 +1,4 @@
-import axios from "axios";
-const API_URL = import.meta.env.VITE_API_URL;
+import api from "./api";
 
 /*
     Función que envia una solicitud cada 5 segundos para
@@ -10,7 +9,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 export async function fetchUltimoDato() {
     try {
-        const response = await axios.get(`${API_URL}/radares/last_date`);
+        const response = await api.get(`/radares/last_date`);
         //console.log("Datos obtenidos correctamente", response.data);
         return response.data
     } catch (error) {
@@ -31,18 +30,24 @@ export async function fetchUltimoDato() {
 export async function updateDatosRadar(updateRadar) {
     try {
         // Enviar la actualización al backend
-            const endpoint = `${API_URL}/radares/${updateRadar.id_radar}`;
+            const endpoint = `/radares/${updateRadar.id_radar}`;
             const token = localStorage.getItem("token");
             const payload = { ...updateRadar };
-            const response = await axios.put(endpoint, payload, {
+            console.log("Este es el valor del token", token)
+            const response = await api.put(endpoint, payload, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             });
             return response.data
         } catch (error) {
-            console.error("Error al actualizar el sensor:", error);
-    }
+            if (error.response) {
+                console.error("Error al actualizar el sensor:", error.response.status, error.response.data);
+            } else {
+                console.error("Error de red o bloqueo CORS:", error);
+            }
+            throw error;
+        }
 }
 
 /*
@@ -53,9 +58,9 @@ export async function updateDatosRadar(updateRadar) {
 */
 export async function changeSwitchWithoutTimer(sensorID, newState) {
     try {
-        const url = `${API_URL}/switch/${sensorID}`;
+        const url = `/switch/${sensorID}`;
         const payload = { estado: newState };
-        const rest = await axios.post(url, payload);
+        const rest = await api.post(url, payload);
         console.log("Estado actualizado correctamente (sin temporizador)", rest.data);
         return rest.data;
         } catch (error) {
@@ -66,9 +71,9 @@ export async function changeSwitchWithoutTimer(sensorID, newState) {
     
 export async function changeSwitchWithTimer(sensorID, newState, timerActive) {
     try {
-        const url = `${API_URL}/switch/temporizador/${sensorID}`;
+        const url = `/switch/temporizador/${sensorID}`;
         const payload = { estado: newState, timerActive };
-        const rest = await axios.put(url, payload);
+        const rest = await api.put(url, payload);
         console.log("Estado actualizado correctamente (con temporizador)", rest.data);
         return rest.data;
         } catch (error) {
@@ -82,11 +87,11 @@ export async function changeSwitchWithTimer(sensorID, newState, timerActive) {
 export async function activarTemporizador(activateSensor) {
     try{
         console.log("Este es lo que llega a activatesensor", activateSensor)
-        const endpoint = `${API_URL}/temporizador/${activateSensor.id_radar}`;
+        const endpoint = `/temporizador/${activateSensor.id_radar}`;
         const token = localStorage.getItem("token");
         const payload = { ...activateSensor };
         console.log("Este es el payload", payload)
-        const response = await axios.put(endpoint, payload, {
+        const response = await api.put(endpoint, payload, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -100,9 +105,9 @@ export async function activarTemporizador(activateSensor) {
 
 export async function fetchHoraTermino(sensorID) {
     try{
-        const endpoint = `${API_URL}/get_hora/${sensorID}`;
+        const endpoint = `/get_hora/${sensorID}`;
         const token = localStorage.getItem("token");
-        const response = await axios.get(endpoint, {
+        const response = await api.get(endpoint, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -117,11 +122,11 @@ export async function fetchHoraTermino(sensorID) {
 export async function changeHoraTermino(sensorID, horaTermino){
     try{
         console.log("Este es lo que llega a activatesensor", sensorID)
-        const endpoint = `${API_URL}/temporizador/termino/${sensorID}`;
+        const endpoint = `/temporizador/termino/${sensorID}`;
         const token = localStorage.getItem("token");
         const payload = { hora_termino: horaTermino };
         console.log("Este es el payload", payload)
-        const response = await axios.put(endpoint, payload, {
+        const response = await api.put(endpoint, payload, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },

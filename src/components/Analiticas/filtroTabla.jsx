@@ -4,7 +4,7 @@ import fetchCantidadRadares from "../../services/analiticas";
 
 const StatusList = ["Apagado", "Encendido"];
 
-export function FiltroTabla({ filters, onFilterChange, onResetFilters }) {
+export function FiltroTabla({ filters, onFilterChange, onResetFilters, onExportCSV}) {
   const [radarList, setRadarList] = useState([]);
   const [radarStatus, setRadarStatus] = useState([]);
 
@@ -25,6 +25,13 @@ export function FiltroTabla({ filters, onFilterChange, onResetFilters }) {
           className="text-sm text-red-500 hover:text-red-700 focus:outline-none border border-red-500 rounded-lg px-2 py-1"
         >
           Limpiar filtros
+        </button>
+
+        <button
+          onClick={onExportCSV}
+          className="text-sm text-green-500 hover:text-green-700 focus:outline-none border border-green-500 rounded-lg px-2 py-1"
+        >
+          Descargar CSV
         </button>
       </div>
 
@@ -103,4 +110,5 @@ FiltroTabla.propTypes = {
   }),
   onFilterChange: PropTypes.func.isRequired,
   onResetFilters: PropTypes.func.isRequired,
+  onExportCSV: PropTypes.func.isRequired,
 };

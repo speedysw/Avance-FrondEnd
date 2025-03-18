@@ -5,6 +5,7 @@ import { FiltroTabla } from '../components/Analiticas/filtroTabla';
 //Utilidades
 import { ObtenerColumnas } from '../services/analiticas';
 import { ObtenerDatos } from '../services/analiticas';
+import { DownloadCSV } from '../services/analiticas';
 import { Chip } from "@material-tailwind/react";
 
 const RegistroAnaliticas = () => {
@@ -70,6 +71,9 @@ const RegistroAnaliticas = () => {
       }
     }
 
+    const onExportCSV = () => {
+      DownloadCSV(filters);
+    };
     // Estado para obtener las columnas de los radares
     useEffect(() => {
       const fetchColumns = async () => {
@@ -128,6 +132,7 @@ const RegistroAnaliticas = () => {
           filters={filters}
           onFilterChange={handleFilterChange}
           onResetFilters={handleResetFilters}
+          onExportCSV={onExportCSV}
         />
         <div>
           <DataTable

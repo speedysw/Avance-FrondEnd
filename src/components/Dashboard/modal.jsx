@@ -24,7 +24,12 @@ const Modal = ({ isOpen, closeModal, sensor, onSave }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Combina el objeto original con los cambios del formulario
-    const sensorActualizado = { ...sensor, ...formData };
+    const durationInSeconds = formData.duration * 60;
+    const sensorActualizado = { 
+      ...sensor, 
+      ...formData, 
+      duration: durationInSeconds 
+    };
     onSave(sensorActualizado);
     closeModal();
   };
@@ -38,44 +43,52 @@ const Modal = ({ isOpen, closeModal, sensor, onSave }) => {
         <h2 className="text-xl mb-4">Editar Radar</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="block text-sm">Nombre Radar:</label>
+            <label className="block text-sm">Nombre Radar:
             <input
+              id="nombre"
               type="text"
               name="nombre"
               value={formData.nombre}
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded-md"
             />
+            </label>
           </div>
         <div className="mb-4">
-            <label className="block text-sm">Capacidad:</label>
+            <label className="block text-sm">Capacidad:
             <input
+            id="volumen"
             type="number"
             name="volumen"
             value={formData.volumen}
             onChange={handleChange}
             className="w-full p-2 border border-gray-300 rounded-md"
             />
+            </label>
         </div>
         <div className="mb-4">
-            <label className="block text-sm">Duracion:</label>
+            <label className="block text-sm">Duracion (en minutos):
             <input
+            id="duration"
             type="number"
             name="duration"
             value={formData.duration}
             onChange={handleChange}
             className="w-full p-2 border border-gray-300 rounded-md"
             />
+            </label>
         </div>
         <div className="mb-4">
-            <label className="block text-sm">Umbral:</label>
+            <label className="block text-sm">Umbral:
             <input
+            id="umbral"
             type="number"
             name="umbral"
             value={formData.umbral}
             onChange={handleChange}
             className="w-full p-2 border border-gray-300 rounded-md"
             />
+            </label>
         </div>
         
           <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded-md">

@@ -143,18 +143,20 @@ const Radares = () => {
     // Funciones para actualizar los datos de las tablas
     const getData = async () => {
         try {
-        setIsLoading(true);
-        setError(null);
-        const result = await ObtenerDatos();
-        setData(result);
+            setIsLoading(true);
+            setError(null);
+            const result = await ObtenerDatos();
+          // Verificamos que result sea un array. Si no, se asigna un array vacío o se extrae la propiedad adecuada
+            setData(Array.isArray(result) ? result : []);
         } catch (error) {
-        console.error('Error al obtener los datos:', error);
-        setError('Error al obtener los datos');
-        toast.error("Error al obtener los datos");
+            console.error('Error al obtener los datos:', error);
+            setError('Error al obtener los datos');
+            toast.error("Error al obtener los datos");
+            setData([]);
         } finally {
-        setIsLoading(false);
+            setIsLoading(false);
         }
-    };
+    };  
 
     const getVirtualData = async () => {
         try {

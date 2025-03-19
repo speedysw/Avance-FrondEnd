@@ -18,10 +18,12 @@ export function DataTable({
     setLocalPage(currentPage ?? 0);
   }, [currentPage]);
 
-  const totalItems = data.length;
+  const safeData = Array.isArray(data) ? data : [];
+  const totalItems = safeData.length;
   const startIdx = localPage * localRowsPerPage;
   const endIdx = startIdx + localRowsPerPage;
-  const paginatedData = data.slice(startIdx, endIdx);
+  const paginatedData = safeData.slice(startIdx, endIdx);
+  
 
   return (
     <div className="py-2">

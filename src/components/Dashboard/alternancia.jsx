@@ -58,6 +58,3 @@ export default function Boton({ isSwitchOn, onToggle }) {
     </div>
   );
 }
-
-
-  

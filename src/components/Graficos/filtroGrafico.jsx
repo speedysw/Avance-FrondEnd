@@ -8,10 +8,17 @@ export function FiltroGrafico({ filters, onFilterChange, onResetFilters, onExpor
   useEffect(() => {
     async function cargarDatos() {
       const radars = await fetchCantidadRadares();
-      setRadarList(radars);
+      if (radars && Array.isArray(radars.data)) {
+        setRadarList(radars.data);
+      } else if (Array.isArray(radars)) {
+        setRadarList(radars);
+      } else {
+        setRadarList([]);
+      }
     }
     cargarDatos();
   }, []);
+  
 
   return (
     <div className="relative p-6 bg-white shadow rounded-lg mb-4">

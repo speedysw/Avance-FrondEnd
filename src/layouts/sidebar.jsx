@@ -9,6 +9,7 @@ import AdminModal from "../components/AdminModal";
 
 export const Sidebar = forwardRef(({ collapsed }, ref) => {
     const { logout, role } = useAuth();
+    console.log("Este es el valor del ",role);
     const [showUserModal, setShowUserModal] = useState(false);
 
     return (

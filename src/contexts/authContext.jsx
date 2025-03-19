@@ -66,7 +66,7 @@ export const AuthProvider = ({ children }) => {
       setToken(storedToken);
       try{
         const decodedToken = jwtDecode(storedToken);
-        setRole(decodedToken.role);
+        setRole(decodedToken.rol);
       }catch(error){
         console.error("Error al decodificar el token", error);
         setToken(null);

@@ -11,11 +11,20 @@ export function FiltroTabla({ filters, onFilterChange, onResetFilters, onExportC
   useEffect(() => {
     async function cargarDatos() {
       const radars = await fetchCantidadRadares();
-      setRadarList(radars);
+      // Si la respuesta tiene la propiedad "data" que es un array
+      if (radars && Array.isArray(radars.data)) {
+        setRadarList(radars.data);
+      } else if (Array.isArray(radars)) {
+        setRadarList(radars);
+      } else {
+        // Si no se cumple ninguno, aseguramos que radarList sea un array vacío
+        setRadarList([]);
+      }
       setRadarStatus(StatusList);
     }
     cargarDatos();
   }, []);
+  
 
   return (
     <div className="relative p-6 bg-white shadow rounded-lg mb-4">

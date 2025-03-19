@@ -6,10 +6,7 @@ import propTypes from "prop-types";
 import AddUserModal from "./addUserModal";
 
 const AdminModal = ({onClose}) => {
-    //Lista de Usuarios
     const [users, setUsers] = useState([]);
-    //const [errorMsg, setErrorMsg] = useState("");
-    //const [successMsg, setSuccessMsg] = useState("");
     const { token } = useAuth();
     const [showAddUserModal, setShowAddUserModal] = useState(false);
 
@@ -91,7 +88,7 @@ const AdminModal = ({onClose}) => {
                     </thead>
                     <tbody className="text-sm">
                     {users.map((user) => (
-                        <tr key={user.id} className="hover:bg-gray-50">
+                        <tr key={user.id_usuario} className="hover:bg-gray-50">
                         <td className="px-4 py-2 font-semibold uppercase">{user.nombre}</td>
                         <td className="px-4 py-2 font-semibold uppercase">{user.username}</td>
                         <td className="px-4 py-2 font-medium uppercase">

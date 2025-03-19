@@ -62,14 +62,15 @@ const RegistroAnaliticas = () => {
     const getData = async () => {
       try {
         setIsLoading(true);
-        const result = await ObtenerDatos(filters); 
-        setData(result)
+        const result = await ObtenerDatos(filters);
+        setData(Array.isArray(result) ? result : []);
       } catch (error) {
         console.error('Error al obtener los datos:', error);
+        setData([]); // Asegura que data sea un array aunque falle la llamada
       } finally {
-        setIsLoading(false); 
+        setIsLoading(false);
       }
-    }
+    };
 
     const onExportCSV = () => {
       DownloadCSV(filters);

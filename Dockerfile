@@ -1,17 +1,32 @@
-FROM python:3.10-slim
+# Etapa 1: Construcción de la aplicación
+FROM node:18-alpine AS build
 
-# Instalar dependencias del sistema para psycopg2
-RUN apt-get update && apt-get install -y gcc libpq-dev
-
+# Establecer directorio de trabajo
 WORKDIR /app
 
-# Copiar el archivo de requerimientos
-COPY ./requirements.txt /app/requirements.txt
+# Copiar archivos de configuración
+COPY package.json package-lock.json ./
 
-# Instalar dependencias de Python
-RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
+# Instalar dependencias
+RUN npm install
 
-# Copiar el resto de los archivos de la aplicación
+# Copiar todos los archivos del proyecto
 COPY . .
 
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
+# Construir la aplicación
+RUN npm run build
+
+# Etapa 2: Servir la aplicación con Nginx
+FROM nginx:alpine
+
+# Copiar archivos construidos al contenedor
+COPY --from=build /app/dist /usr/share/nginx/html
+
+# Copiar la configuración personalizada de Nginx
+COPY default.conf /etc/nginx/conf.d/
+
+# Exponer el puerto 80
+EXPOSE 80
+
+# Comando para iniciar Nginx
+CMD ["nginx", "-g", "daemon off;"]

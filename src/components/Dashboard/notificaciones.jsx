@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { toast } from 'react-toastify';
 
-function useSensorNotifications(sensors, intervaloNotificacion = 30000) {
+function useSensorNotifications(sensors, intervaloNotificacion = 60000) {
   // Almacena el último timestamp de notificación para cada sensor, usando su id como clave.
     const lastNotifiedRef = useRef({});
 

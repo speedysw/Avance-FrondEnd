@@ -16,6 +16,7 @@ import { Plus, Pencil, Trash2 } from 'lucide-react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Chip } from "@material-tailwind/react";
+import { useAuth } from "../contexts/useAuth";
 
 const Radares = () => {
     // Estados y lógica existentes
@@ -24,6 +25,7 @@ const Radares = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(0);
     const [error, setError] = useState(null);
+    const { role } = useAuth();
 
     // Estados para manejar las variables escogidas para los modales
     const [radarToEdit, setRadarToEdit] = useState(null);
@@ -57,34 +59,36 @@ const Radares = () => {
             });
         },
         },
-        {
-        header: 'Acciones',
-        accessor: (row) => row,
-        render: (cellValue, rowData) => (
-            <div className="flex space-x-3 px-3">
-            <button
-                type="button"
-                onClick={(e) => {
-                e.stopPropagation();
-                setRadarToEdit(rowData);
-                setIsEditModalOpen(true);
-                }}
-            >
-                <Pencil size={20} strokeWidth={1.5} />
-            </button>
-            <button
-                type="button"
-                onClick={(e) => {
-                e.stopPropagation();
-                setRadarToDelete(rowData);
-                setIsDeleteModalOpen(true);
-                }}
-            >
-                <Trash2 size={20} strokeWidth={1.5} />
-            </button>
-            </div>
-        ),
-        },
+        ...(role === 1
+            ? [{
+                header: 'Acciones',
+                accessor: (row) => row,
+                render: (cellValue, rowData) => (
+                  <div className="flex space-x-3 px-3">
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setRadarToEdit(rowData);
+                        setIsEditModalOpen(true);
+                      }}
+                    >
+                      <Pencil size={20} strokeWidth={1.5} />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setRadarToDelete(rowData);
+                        setIsDeleteModalOpen(true);
+                      }}
+                    >
+                      <Trash2 size={20} strokeWidth={1.5} />
+                    </button>
+                  </div>
+                ),
+              }]
+            : [])
     ];
 
     const columnasVirtuales = [
@@ -110,34 +114,36 @@ const Radares = () => {
             }
         },
         { header: 'Asociado', accessor: 'id_vinculacion' },
-        {
-        header: 'Acciones',
-        accessor: (row) => row,
-        render: (cellValue, rowData) => (
-            <div className="flex space-x-3 px-3">
-            <button
-                type="button"
-                onClick={(e) => {
-                e.stopPropagation();
-                setRadarToEdit(rowData);
-                setIsEditModalOpen(true);
-                }}
-            >
-                <Pencil size={20} strokeWidth={1.5} />
-            </button>
-            <button
-                type="button"
-                onClick={(e) => {
-                e.stopPropagation();
-                setRadarToDelete(rowData);
-                setIsDeleteModalOpen(true);
-                }}
-            >
-                <Trash2 size={20} strokeWidth={1.5} />
-            </button>
-            </div>
-        ),
-        },
+        ...(role === 1
+            ? [{
+                header: 'Acciones',
+                accessor: (row) => row,
+                render: (cellValue, rowData) => (
+                  <div className="flex space-x-3 px-3">
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setRadarToEdit(rowData);
+                        setIsEditModalOpen(true);
+                      }}
+                    >
+                      <Pencil size={20} strokeWidth={1.5} />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setRadarToDelete(rowData);
+                        setIsDeleteModalOpen(true);
+                      }}
+                    >
+                      <Trash2 size={20} strokeWidth={1.5} />
+                    </button>
+                  </div>
+                ),
+              }]
+            : [])
     ];
 
     // Funciones para actualizar los datos de las tablas
@@ -231,14 +237,16 @@ const Radares = () => {
         <div className="relative p-6 text-left font-medium text-gray-600 bg-white shadow rounded-lg mb-4">
             <h2 className="text-xl font-semibold">Radares</h2>
             <div className="absolute top-4 right-4 flex space-x-2">
-            <button
-                type="button"
-                onClick={() => setIsAddModalOpen(true)}
-                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700"
-            >
-                <Plus className="w-4 h-4 mr-2" />
-                Añadir Radar
-            </button>
+            {role === 1 && (
+                <button
+                    type="button"
+                    onClick={() => setIsAddModalOpen(true)}
+                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700"
+                >
+                    <Plus className="w-4 h-4 mr-2" />
+                    Añadir Radar
+                </button>
+                )}
             </div>
         </div>
         {error && (

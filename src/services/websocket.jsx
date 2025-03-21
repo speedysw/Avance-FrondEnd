@@ -2,6 +2,8 @@ import { createContext, useEffect, useState } from "react";
 import useSensorNotifications from "../components/Dashboard/notificaciones";
 import PropTypes from "prop-types";
 
+const URL_SOCKET = import.meta.env.VITE_URL_SOCKET;
+
 export const WebSocketContext = createContext(null);
 
 export const WebSocketProvider = ({ children }) => {
@@ -11,7 +13,7 @@ export const WebSocketProvider = ({ children }) => {
     useSensorNotifications(sensorData);
 
     useEffect(() => {
-        const socket = new WebSocket("ws://192.168.0.110:8000/ws");
+        const socket = new WebSocket(`ws://${URL_SOCKET}/ws`);
 
         socket.onopen = () => {
         console.log("Conexión WebSocket establecida");

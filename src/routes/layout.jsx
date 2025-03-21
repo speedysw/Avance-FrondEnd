@@ -50,7 +50,7 @@ const Layout = () => {
                     <Outlet />
                     <ToastContainer 
                         position="top-center"
-                        autoClose={5000}
+                        autoClose={3500}
                         hideProgressBar
                         transition={Zoom}
                         closeOnClick={true}

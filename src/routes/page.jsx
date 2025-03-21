@@ -6,13 +6,13 @@ import ButtonAlternance from "../components/Dashboard/alternancia";
 import SelectDropdown from "../components/Dashboard/select";
 import Modal from "../components/Dashboard/modal";
 import useSensorNotifications from "../components/Dashboard/notificaciones";
-import PaginationControlled from "../components/Dashboard/Paginacion";
+import PaginationControlled from "../components/Dashboard/paginacion";
 import RadarTime from "../components/Dashboard/radarTime";
 import TemporizadorModal from "../components/Dashboard/TemporizadorModal";
 // Utilidades
 import { fetchUltimoDato, updateDatosRadar, activarTemporizador, changeHoraTermino } from "../services/dashbord";
 import useSwitch from "../hooks/state_switch";
-
+import { useAuth } from "../contexts/useAuth";
 //Iconos
 import { RiSettings5Line } from "@remixicon/react";
 import { Timer } from 'lucide-react';
@@ -21,7 +21,8 @@ const RadarCards = () => {
   // Estados para manejar los sensores
   const [sensors, setSensors] = useState([]);
   const { handleSwitchChange } = useSwitch();
-  
+  const { role } = useAuth();
+  console.log("Este es el valor de rol", role);
   // Estados para los filtros
   const [selectedOption, setSelectedOption] = useState("");
   const [progressOption, setProgressOption] = useState("Circular");
@@ -171,17 +172,17 @@ const RadarCards = () => {
               className="card col-span-1 flex items-center justify-center p-4 relative"
             >
               <div className="card-header text-center flex flex-col items-center justify-center">
-                <button
-                  className="absolute top-2 right-2 text-gray-800 font-semibold py-1 px-2"
-                  onClick={() => handleOpenModal(sensor)}
-                >
-                  <RiSettings5Line
-                    className="-ml-0.5 size-6 shrink-0"
-                    aria-hidden="true"
-                  />
-                  
-                </button>
-
+              {role === 1 && (
+                  <button
+                    className="absolute top-2 right-2 text-gray-800 font-semibold py-1 px-2"
+                    onClick={() => handleOpenModal(sensor)}
+                  >
+                    <RiSettings5Line
+                      className="-ml-0.5 size-6 shrink-0"
+                      aria-hidden="true"
+                    />
+                  </button>
+                )}
                 <button
                   disabled={!sensor.estado}
                   className="absolute top-2 left-2 text-gray-800 font-semibold py-1 px-2"
